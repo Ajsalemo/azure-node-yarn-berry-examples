@@ -2,9 +2,6 @@
 	"name": "clicktime-more",
 	"version": "2.1.1",
 	"private": true,
-	"engines": {
-		"node": "16.13.2"
-	},
 	"scripts": {
 		"start": "node app.js",
 		"start:dev": "tsc && node app.js && (cd react-components && yarn build)",
