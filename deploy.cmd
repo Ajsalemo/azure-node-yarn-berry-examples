@@ -108,13 +108,13 @@ call :ExecuteCmd !NPM_CMD! install yarn
 
 :: 5. Set Yarn Berry
 echo Setting Yarn Berry
-call :ExecuteCmd D:\home\site\node_modules\wwwroot\yarn\bin\yarn set version stable
+:: call :ExecuteCmd D:\home\site\node_modules\wwwroot\yarn\bin\yarn set version stable
 
 :: 6. Install Yarn packages
 echo Installing Yarn Packages.
 IF EXIST "%DEPLOYMENT_TARGET%\package.json" (
   pushd "%DEPLOYMENT_TARGET%"
-  call :ExecuteCmd D:\home\site\node_modules\yarn\bin\yarn install
+  call :ExecuteCmd yarn install
   IF !ERRORLEVEL! NEQ 0 goto error
   popd
 )
