@@ -2,7 +2,7 @@
 
 :: ----------------------
 :: KUDU Deployment Script
-:: Version: 1.0.9
+:: Version: 1.0.17
 :: ----------------------
 
 :: Prerequisites
@@ -55,7 +55,6 @@ goto Deployment
 :SelectNodeVersion
 
 IF DEFINED KUDU_SELECT_NODE_VERSION_CMD (
-
   :: The following are done only on Windows Azure Websites environment
   call %KUDU_SELECT_NODE_VERSION_CMD% "%DEPLOYMENT_SOURCE%" "%DEPLOYMENT_TARGET%" "%DEPLOYMENT_TEMP%"
   IF !ERRORLEVEL! NEQ 0 goto error
@@ -64,7 +63,7 @@ IF DEFINED KUDU_SELECT_NODE_VERSION_CMD (
     SET /p NODE_EXE=<"%DEPLOYMENT_TEMP%\__nodeVersion.tmp"
     IF !ERRORLEVEL! NEQ 0 goto error
   )
-
+  
   IF EXIST "%DEPLOYMENT_TEMP%\__npmVersion.tmp" (
     SET /p NPM_JS_PATH=<"%DEPLOYMENT_TEMP%\__npmVersion.tmp"
     IF !ERRORLEVEL! NEQ 0 goto error
@@ -75,7 +74,6 @@ IF DEFINED KUDU_SELECT_NODE_VERSION_CMD (
   )
 
   SET NPM_CMD="!NODE_EXE!" "!NPM_JS_PATH!"
-
 ) ELSE (
   SET NPM_CMD=npm
   SET NODE_EXE=node
@@ -96,25 +94,11 @@ IF /I "%IN_PLACE_DEPLOYMENT%" NEQ "1" (
   IF !ERRORLEVEL! NEQ 0 goto error
 )
 
-:: 2 Update NPM 
-:: call :ExecuteCmd !NPM_CMD! install -g npm@8.15.0
 
-:: 3. Select node version
-call :SelectNodeVersion
-
-:: 4. Install Yarn
-echo Yarn Install.
-call :ExecuteCmd !NPM_CMD! install yarn --prefix %HOME%\"Program Files"\yarn
-
-:: 5. Set Yarn Berry
-echo Setting Yarn Berry
-:: call :ExecuteCmd D:\home\site\node_modules\wwwroot\yarn\bin\yarn set version stable
-
-:: 6. Install Yarn packages
-echo Installing Yarn Packages.
+:: 3. Install npm packages
 IF EXIST "%DEPLOYMENT_TARGET%\package.json" (
   pushd "%DEPLOYMENT_TARGET%"
-  call :ExecuteCmd %HOME%\"Program Files"\yarn install
+  call :ExecuteCmd !NPM_CMD! install --production
   IF !ERRORLEVEL! NEQ 0 goto error
   popd
 )
