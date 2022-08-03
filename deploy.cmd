@@ -97,7 +97,7 @@ IF /I "%IN_PLACE_DEPLOYMENT%" NEQ "1" (
 )
 
 :: 2 Update NPM 
-call :ExecuteCmd !NPM_CMD! install -g npm@8.15.0
+:: call :ExecuteCmd !NPM_CMD! install -g npm@8.15.0
 
 :: 3. Select node version
 call :SelectNodeVersion
