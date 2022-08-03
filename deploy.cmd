@@ -104,7 +104,7 @@ call :SelectNodeVersion
 
 :: 4. Install Yarn
 echo Yarn Install.
-call :ExecuteCmd !NPM_CMD! install yarn --prefix %HOME%\Program Files\yarn
+call :ExecuteCmd !NPM_CMD! install yarn --prefix %HOME%\"Program Files"\yarn
 
 :: 5. Set Yarn Berry
 echo Setting Yarn Berry
@@ -114,7 +114,7 @@ echo Setting Yarn Berry
 echo Installing Yarn Packages.
 IF EXIST "%DEPLOYMENT_TARGET%\package.json" (
   pushd "%DEPLOYMENT_TARGET%"
-  call :ExecuteCmd %HOME%\Program Files\yarn install
+  call :ExecuteCmd %HOME%\"Program Files"\yarn install
   IF !ERRORLEVEL! NEQ 0 goto error
   popd
 )
