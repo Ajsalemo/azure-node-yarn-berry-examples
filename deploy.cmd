@@ -103,8 +103,8 @@ SET PATH=%PATH%;D:\local\AppData\npm
 echo Installing Yarn Packages.
 IF EXIST "%DEPLOYMENT_TARGET%\package.json" (
   pushd "%DEPLOYMENT_TARGET%"
-  echo "Running yarn install --production.."
-  call :ExecuteCmd yarn install --production
+  echo "Running yarn install.."
+  call :ExecuteCmd yarn install 
   IF !ERRORLEVEL! NEQ 0 goto error
   popd
 )
