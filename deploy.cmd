@@ -104,7 +104,7 @@ call :SelectNodeVersion
 
 :: 4. Install Yarn
 echo Yarn Install.
-call :ExecuteCmd !NPM_CMD! install --prefix D:\home\site\wwwroot\yarn
+call :ExecuteCmd !NPM_CMD! install --prefix %HOME%\site\wwwroot\yarn
 
 :: 5. Set Yarn Berry
 echo Setting Yarn Berry
