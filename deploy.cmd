@@ -96,7 +96,7 @@ IF /I "%IN_PLACE_DEPLOYMENT%" NEQ "1" (
 
 
 echo "Installing yarn.."
-call :ExecuteCmd !NPM_CMD! install -g yarn
+call :ExecuteCmd npm install yarn -g
 
 :: 4. Install Yarn packages
 echo Installing Yarn Packages.
