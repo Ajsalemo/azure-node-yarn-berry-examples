@@ -1,1 +1,1 @@
-nodeProcessCommandLine: D:\home\site\wwwroot yarn start
+nodeProcessCommandLine: 'D:\home\site\wwwroot yarn start'
