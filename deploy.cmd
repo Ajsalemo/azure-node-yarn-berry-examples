@@ -95,14 +95,16 @@ IF /I "%IN_PLACE_DEPLOYMENT%" NEQ "1" (
 )
 
 
-echo "Installing yarn.."
-call :ExecuteCmd npm install -g yarn
+echo "Installing Corepack.."
+call :ExecuteCmd npm i -g corepack
 SET PATH=%PATH%;D:\local\AppData\npm
 
 :: 4. Install Yarn packages
 echo Installing Yarn Packages.
 IF EXIST "%DEPLOYMENT_TARGET%\package.json" (
   pushd "%DEPLOYMENT_TARGET%"
+  echo "Running Yarn set stable.."
+  call :ExecuteCmd yarn set version stable 
   echo "Running yarn install.."
   call :ExecuteCmd yarn install 
   echo "Checking yarn version.."
