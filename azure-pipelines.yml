@@ -7,6 +7,9 @@ trigger:
 - master
 
 pool:
+  vmImage: 'windows-latest'
+ 
+variables:
   vmImageName: 'windows-latest'
 
 stages:
