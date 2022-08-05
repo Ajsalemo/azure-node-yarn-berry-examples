@@ -6,5 +6,5 @@ console.log(port);
 http.createServer(function(_req, res) {
   res.writeHead(200, { 'Content-Type': 'text/plain' });
   // Write something that leverages a yarn installed package.
-  res.end('Hello World\n' + moment().format());
+  res.end('Hello World, v.2.0 \n' + moment().format());
 }).listen(port);
