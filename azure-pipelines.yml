@@ -30,11 +30,19 @@ stages:
     - script: |
         echo "Running Yarn set stable.."
         yarn set version stable
+      displayName: 'Set yarn version'
+
+    - script: |
         echo "Running yarn install.."
         yarn install
         echo "Checking yarn version.."
         yarn -v
-      displayName: 'yarn install and build'
+      displayName: 'Yarn install'
+
+    - script: |
+        echo "Checking yarn version.."
+        yarn -v
+      displayName: 'Check yarn version..'
 
     - task: ArchiveFiles@2
       displayName: 'Archive files'
