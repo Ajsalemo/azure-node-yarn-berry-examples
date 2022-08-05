@@ -105,6 +105,8 @@ IF EXIST "%DEPLOYMENT_TARGET%\package.json" (
   pushd "%DEPLOYMENT_TARGET%"
   echo "Running yarn install.."
   call :ExecuteCmd yarn install 
+  echo "Checking yarn version.."
+  echo yarn -v
   IF !ERRORLEVEL! NEQ 0 goto error
   popd
 )
