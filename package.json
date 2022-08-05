@@ -12,7 +12,6 @@
 		"lint:fix": "eslint --fix --ext .js,.jsx,.ts,.tsx ."
 	},
 	"dependencies": {
-		"@clicktime/api-v2": "^0.0.23",
 		"@faker-js/faker": "^7.1.0",
 		"@types/faker": "^6.6.9",
 		"@types/nodemailer": "^6.4.4",
