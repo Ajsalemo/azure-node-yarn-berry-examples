@@ -52,8 +52,6 @@ goto Deployment
 :: Utility Functions
 :: -----------------
 
-:SelectNodeVersion
-
 IF DEFINED KUDU_SELECT_NODE_VERSION_CMD (
   :: The following are done only on Windows Azure Websites environment
   call %KUDU_SELECT_NODE_VERSION_CMD% "%DEPLOYMENT_SOURCE%" "%DEPLOYMENT_TARGET%" "%DEPLOYMENT_TEMP%"
@@ -94,23 +92,40 @@ IF /I "%IN_PLACE_DEPLOYMENT%" NEQ "1" (
   IF !ERRORLEVEL! NEQ 0 goto error
 )
 
-
-echo "Updating $PATH for NPM and yarn.."
+echo "Installing corepack.."
 call :ExecuteCmd npm i -g corepack
+echo "Setting yarn to path.."
 SET PATH=%PATH%;D:\local\AppData\npm
 
-:: 4. Install Yarn packages
-echo Installing Yarn Packages.
+:: IF USING 'Zero Installs'
+:: This means that .yarn/cache should be checked into source, which is recommended, per here: https://yarnpkg.com/getting-started/install#initializing-your-project
 IF EXIST "%DEPLOYMENT_TARGET%\package.json" (
-  pushd "%DEPLOYMENT_TARGET%"
-  echo "Running Yarn set stable.."
-  call :ExecuteCmd yarn set version stable 
-  echo "Running yarn install.."
-  call :ExecuteCmd yarn install 
-  echo "Checking yarn version.."
-  call :ExecuteCmd yarn -v
-  IF !ERRORLEVEL! NEQ 0 goto error
-  popd
+  IF EXIST "%DEPLOYMENT_TARGET%\.yarn\cache\" (
+    pushd "%DEPLOYMENT_TARGET%"  
+    echo ".yarn/cache checked in for 'Zero Installs', pushing cache and not running install.."
+    IF !ERRORLEVEL! NEQ 0 goto error
+    popd
+  )
+)
+
+:: If NOT using 'Zero-Installs'
+:: Technically, setting up a project with 'yarn init 2' is using Zero-Installs by default
+:: If .yarn/cache is checked in to source and pushed, then we shouldn't even need to run the below - see this: https://yarnpkg.com/getting-started/install#initializing-your-project
+:: However, if the project is NOT set to use 'Zero-Installs', the below can be used to change the yarn version to stable
+:: 3. Install yarn packages
+IF EXIST "%DEPLOYMENT_TARGET%\package.json" (
+  IF NOT EXIST "%DEPLOYMENT_TARGET%\.yarn\cache\" (
+    pushd "%DEPLOYMENT_TARGET%"  
+    echo ".yarn/cache not found, configuring yarn.."
+    echo "Setting yarn version to stable.."
+    call :ExecuteCmd yarn set version stable
+    echo "Checking yarn version.."
+    call :ExecuteCmd yarn -v
+    echo "Running yarn install.."
+    call :ExecuteCmd yarn install 
+    IF !ERRORLEVEL! NEQ 0 goto error
+    popd
+  )
 )
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
